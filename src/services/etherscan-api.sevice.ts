@@ -24,6 +24,7 @@ const createNew = async (
 export async function fetchLatestBlock(): Promise<number | undefined> {
   const url = `${apiUrl}?module=proxy&action=eth_getBlockByNumber&tag=latest&boolean=true&apikey=${process
     .env.ETHERSCAN_API_KEY!}`;
+  console.log('process.env.ETHERSCAN_API_KEY!', process.env.ETHERSCAN_API_KEY!);
 
   try {
     const response = await fetch(url);
@@ -39,11 +40,6 @@ export const getBlock = async (num: string): Promise<Block | undefined> => {
     let res: Block = {
       timestamp: ''
     };
-    console.log(
-      'process.env.ETHERSCAN_API_KEY!',
-      process.env.ETHERSCAN_API_KEY!
-    );
-
     await fetch(
       `https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=${num}&boolean=true&apikey=${process
         .env.ETHERSCAN_API_KEY!}`
