@@ -25,7 +25,6 @@ const createNew = async (
 export async function fetchLatestBlock(): Promise<number | undefined> {
   const url = `${apiUrl}?module=proxy&action=eth_getBlockByNumber&tag=latest&boolean=true&apikey=${process
     .env.ETHERSCAN_API_KEY!}`;
-  console.log('process.env.ETHERSCAN_API_KEY!', process.env.ETHERSCAN_API_KEY!);
 
   try {
     const response = await fetch(url);
@@ -74,7 +73,6 @@ export const updatingDB = () => {
             setTimeout(async () => {
               const block = await getBlock(i.toString(16));
               if (block && block.transactions) {
-                console.log('Length', block.transactions.length);
                 block.transactions.forEach(
                   async (transaction: TransactionType) => {
                     await createNew(transaction, block.timestamp, lastAPI - i);
