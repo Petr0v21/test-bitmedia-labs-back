@@ -54,29 +54,16 @@ export const getBlock = async (num: string): Promise<Block | undefined> => {
 export const updatingDB = () => {
   try {
     setInterval(async () => {
-      console.log('UpdatingDB');
-
       const lastDB = await Transaction.findOne({}, { blockNumber: 1 }).sort({
         blockNumber: -1
       });
       const lastAPI = await fetchLatestBlock();
-      console.log('LastApiBlockID', lastAPI?.toString(16));
       if (!lastAPI) {
         console.error({ error: true, message: 'EtherscanApi doesn`t work!' });
         return;
       }
       if (lastDB) {
-        console.log('DB not empty');
         if (lastAPI !== parseInt(lastDB.blockNumber, 16)) {
-          const countNewTransactions =
-            lastAPI - parseInt(lastDB.blockNumber, 16);
-          console.log('lastAPI', lastAPI);
-          console.log(
-            'parseInt(lastDB.blockNumber, 16)',
-            parseInt(lastDB.blockNumber, 16)
-          );
-          console.log('Differrent', countNewTransactions);
-
           for (
             let i = parseInt(lastDB.blockNumber, 16) + 1;
             i <= lastAPI;
@@ -96,13 +83,10 @@ export const updatingDB = () => {
           }
         }
       } else {
-        console.log('DB empty!');
         setTimeout(async () => {
           for (let i = lastAPI - 1000; i <= lastAPI; i++) {
             const block = await getBlock(i.toString(16));
             if (block && block.transactions) {
-              console.log('Time', block.timestamp);
-              console.log('Length', block.transactions.length);
               block.transactions.forEach(
                 async (transaction: TransactionType) => {
                   await createNew(transaction, block.timestamp, 0);
@@ -112,9 +96,8 @@ export const updatingDB = () => {
           }
         }, 500);
       }
-    }, 60 * 1000);
+    }, 10 * 60 * 1000);
   } catch (e) {
     console.error(e);
   }
 };
-//10*60*1000
