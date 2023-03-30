@@ -1,0 +1,5 @@
+/.eslintignore
+/.prettierignore
+/.env
+/node_modules
+/build
