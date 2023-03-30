@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import Transaction from '../models/Transaction';
 import { Block, ResBlock, Transaction as TransactionType } from '../types';
 
@@ -28,7 +29,7 @@ export async function fetchLatestBlock(): Promise<number | undefined> {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
+    const data = (await response.json()) as any;
     return parseInt(data.result.number, 16);
   } catch (error) {
     console.error(`Failed to fetch latest block`, error);
@@ -44,7 +45,7 @@ export const getBlock = async (num: string): Promise<Block | undefined> => {
       `https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=${num}&boolean=true&apikey=${process
         .env.ETHERSCAN_API_KEY!}`
     )
-      .then((response) => response.json())
+      .then((response) => response.json() as any)
       .then((json: ResBlock) => (res = json.result));
     return res;
   } catch (e) {
