@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { number, object, string } from 'yup';
 import Transaction, { TransactionType } from '../models/Transaction';
-import { BodyType, FilterBody, FilterKey } from '../types';
+import { BodyType, FilterKey } from '../types';
 import { fetchLatestBlock } from './etherscan-api.sevice';
 
 const filterSchema = object({
